@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/static/js/screen.js"></script>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="/static/css/present.css">
+        <title>{{ .siteTitle }}</title>
+    </head>
+    <body class="w3-container w3-light-grey">
+        <div class="outer">
+            <div id="main">
+                <div class="w3-bar w3-white">
+                    <a class="w3-bar-item w3-button" href="/">Top</a>
+                    <div class="w3-bar-item"><b>Lecture Slides</b></div>
+                    <button type="button" onClick="largerSlide()" class="w3-button w3-white w3-bar-item w3-right">&nbsp+&nbsp</button>
+                    <button type="button" onClick="smallerSlide()" class="w3-button w3-black w3-bar-item w3-right">&nbsp-&nbsp</button>
+                </div>
+            </div>
+            <p id="screen"></p>
+        </div>
+        <footer></footer>
+    </body>
+</html>

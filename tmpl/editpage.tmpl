@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EDIT-PAGE: {{ .title }} </title>
+</head>
+<body>
+    <h1>EDIT-PAGE: {{ .title }}</h1>
+    <form action="/submit/{{ .title }}" method="post">
+        <textarea name="text" rows="10" cols="50">{{ .content }}</textarea><br>
+        <input type="submit" value="Save">
+    </form>
+</body>
+</html>

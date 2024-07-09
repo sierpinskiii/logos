@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CREATE-PAGE: {{ .title }}</title>
+</head>
+<body>
+    <h1>CREATE-PAGE: {{ .title }}</h1>
+    <form action="/submit/{{ .title }}" method="post">
+        <textarea name="text" rows="10" cols="50"></textarea><br>
+        <input type="submit" value="Save">
+    </form>
+</body>
+</html>

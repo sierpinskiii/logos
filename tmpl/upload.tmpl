@@ -1,0 +1,15 @@
+<h1>{{ .title }}</h1>
+
+<form action="/upload" enctype="multipart/form-data" method="post">
+    <!-- Title input -->
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title" />
+    <br>
+    <!-- Google Drive Link Input -->
+    <label for="link">Google Drive Link</label>
+    <input type="text" name="link" id="link" />
+    <br>
+    <!-- File input -->
+    <input type="file" name="file" />
+    <input type="submit" value="Upload File" />
+</form>
