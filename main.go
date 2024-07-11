@@ -20,9 +20,10 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 )
 
-var siteTitle = "LOGOS"
+var siteTitle = "λόγος — Wiki for Literate Programming"
 
-var wikiDataDir = "./wikidata/src/"
+var wikiSrcDir = "./wikidata/src/"
+var wikiDstDir = "./wikidata/dst/"
 
 func main() {
 	PORT := os.Getenv("PORT")
@@ -126,7 +127,7 @@ func main() {
 			return
     }
 
-    if err := saveNoweb(textContent, wikiDataDir, title); err != nil {
+    if err := saveNoweb(textContent, wikiSrcDir, title); err != nil {
 			c.String(500, fmt.Sprintf("Failed to save file: %v", err))
 			return
     }
@@ -150,7 +151,7 @@ func main() {
         return
     }
 
-		filePath := filepath.Join(wikiDataDir, title+".nw")
+		filePath := filepath.Join(wikiSrcDir, title+".nw")
 		
 		content, err := ioutil.ReadFile(filePath)
     if err != nil {
@@ -159,6 +160,28 @@ func main() {
     }
 		
 		c.HTML(http.StatusOK, "editpage.tmpl", gin.H{
+			"title": title,
+			"content": template.HTML(content),
+		})
+	})
+
+	r.GET("/view/html/:title", authRequired(), func(c *gin.Context) {
+		title := c.Param("title")
+
+    if !secureTitle(title) {
+			c.String(400, "Title must be alphanumeric")
+			return
+    }
+
+		filePath := filepath.Join(wikiDstDir, title+".html")
+		
+		content, err := ioutil.ReadFile(filePath)
+    if err != nil {
+			c.String(500, fmt.Sprintf("Failed to read file: %v", err))
+			return
+    }
+		
+		c.HTML(http.StatusOK, "viewpage.tmpl", gin.H{
 			"title": title,
 			"content": template.HTML(content),
 		})

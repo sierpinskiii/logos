@@ -1,0 +1,57 @@
+body {
+  margin: 0 auto;
+  width: 95%;
+  font-family: "DejaVu Serif", "Cambria";
+}
+
+hr {
+  color: black;
+}
+
+.sidenav {
+  width: 130px;
+  position: fixed;
+  z-index: 1;
+  top: 20px;
+  left: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  // font-size: 25px;
+  color: brown;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #064579;
+}
+
+.main {
+  margin-left: 140px; /* Same width as the sidebar + left position in px */
+  padding: 0px 10px;
+}
+
+.topmenu {
+  margin-right: 15px;
+}
+
+.w3-allerta {
+  font-family: "Georgia", Sans-serif;
+}
+
+#newpage:after {content: "Create New Page"}
+#newpage:hover:after {content: "zbasu lo cnino pe'a pe'a pelxu"}
+
+#listproj:after {content: "List Existing Projects"}
+#listproj:hover:after {content: "liste lo selzd"}
+
+#login:after {content: "Login"}
+#login:hover:after {content: "Hello"}
+
+#logout:after {content: "Logout"}
+#logout:hover:after {content: "Goodbye"}

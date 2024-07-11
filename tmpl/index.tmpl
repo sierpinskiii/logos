@@ -6,31 +6,29 @@
         <link rel="stylesheet" href="/static/css/main.css">
         <title>{{ .siteTitle }}</title>
     </head>
-    <body class="w3-container w3-light-grey">
-        <div class="outer">
-            <h1 class="w3-allerta">{{ .siteTitle }}</h1>
+    <body class="w3-container w3-khaki">
+        <div class="main">
+          <h1 class="w3-allerta">{{ .siteTitle }}</h1>
+          <hr>
             <p> {{ .message }} </p>
-            <p>le skami cu zvati kei port {{ .port }} ne lo veltci be lo minji {{ .addr }}</p>
-            <p>
-                <a class="topmenu" id="present-studentin" href="/student"></a>
-                <a class="topmenu" id="present-lehrer" href="/present/lecturer"></a>
-                <a class="topmenu" id="present-lehrer-upload" href="/upload"></a>
-                <a class="topmenu" id="login" href="/login"></a>
-                <a class="topmenu" id="logout" href="/logout"></a>
-            </p>
-            <p>
-                <img class="slide" width="100%" src="/static/img/cover.jpg">
-            </p>
-        </div>
-    
-    <footer class="w3-container w3-white" width="100%">
-        <p>
-            <i>Copyright© 2024 
-                <a href="https://github.com/sierpinskiii/rontgen">H. S. Choi</a>. 
-                All rights reserved. Powered by HHLab.
-            </i>
-        </p>
-    </footer>
+          <p>le skami cu zvati kei port {{ .port }} ne lo veltci be lo minji {{ .addr }}</p>
 
+          <footer class="w3-container w3-white" width="100%">
+            <p>
+              <i>Copyright© 2024 
+                <a href="https://nightj4r.xyz">H. S. Choi</a>. 
+                All rights reserved. Powered by HHLab.
+              </i>
+            </p>
+          </footer>
+
+        </div>
+
+        <div class="sidenav">
+          <a href="/login">Login</a>
+          <a href="/logout">Logout</a>
+          <a href="/submit">New Page</a>
+          <a href="/listproj">List Projects</a>
+        </div>
     </body>
 </html>
