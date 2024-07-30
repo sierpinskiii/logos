@@ -13,5 +13,6 @@ in pkgs.mkShell {
     pkgs.go-tools
     pkgs.imagemagick
     pkgs.ghostscript
+    pkgs.noweb
   ];
 }

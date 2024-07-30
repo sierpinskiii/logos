@@ -21,5 +21,8 @@
 go.work
 go.work.sum
 
+node_modules/
+frontend/node_modules/
+
 users.json
 wikidata/

@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"os/exec"
 
 	"fmt"
 	"log"
@@ -15,6 +16,7 @@ import (
 	"regexp"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -27,11 +29,13 @@ var wikiDstDir = "./wikidata/dst/"
 
 func main() {
 	PORT := os.Getenv("PORT")
+	
 	if PORT == "" {
 		PORT = "8080"
 	}
 
 	r := gin.Default()
+  r.Use(cors.Default())
 
 	users := make(map[string]string)
 	// Read the JSON file into a byte slice
@@ -127,10 +131,20 @@ func main() {
 			return
     }
 
-    if err := saveNoweb(textContent, wikiSrcDir, title); err != nil {
+		safeTitle := sanitizeFilename(title)
+
+    if err := saveNoweb(textContent, wikiSrcDir, safeTitle); err != nil {
 			c.String(500, fmt.Sprintf("Failed to save file: %v", err))
 			return
     }
+
+		generate := exec.Command(
+			"noweave", "-filter", "l2h", "index", "-html",
+			wikiSrcDir + safeTitle + ".nw",
+			" > ",
+			wikiDstDir + safeTitle + ".html",
+		)
+		err = generate.Run()
 
     // Respond with a success message
     c.String(200, "File saved: %s.nw", title)
@@ -193,6 +207,18 @@ func main() {
 func secureTitle(s string) bool {
     re := regexp.MustCompile("^[a-zA-Z0-9]+$")
     return re.MatchString(s)
+}
+
+func sanitizeFilename(input string) string {
+	// Define a regex pattern for allowed characters (alphanumeric, dash, underscore, dot)
+	reg, err := regexp.Compile("[^a-zA-Z0-9._-]+")
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+	// Replace disallowed characters with an underscore
+	safe := reg.ReplaceAllString(input, "_")
+	return safe
 }
 
 func saveNoweb(textContent, dir, filename string) error {
