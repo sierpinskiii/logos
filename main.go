@@ -57,7 +57,7 @@ func main() {
 	r.LoadHTMLGlob("tmpl/*")
 
 	r.Static("/static", "./static")
-	r.Static("/wikidata/dst", "./w")
+	// r.Static("/wikidata/dst", "./w")
 
 	r.GET("/login", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "login.tmpl", gin.H{
@@ -139,22 +139,50 @@ func main() {
     }
 
 		generate := exec.Command(
-			"noweave", "-filter", "l2h", "index", "-html",
-			wikiSrcDir + safeTitle + ".nw",
-			" > ",
-			wikiDstDir + safeTitle + ".html",
+			"sh", "-c",
+			"noweave -filter l2h -index -html " + wikiSrcDir + safeTitle + ".nw" + " > " + wikiDstDir + safeTitle + ".html",
 		)
-		err = generate.Run()
+
+		if err := generate.Run(); err != nil {
+			c.String(500, fmt.Sprintf("Failed to weave your writing: %v", err))
+			return
+    }
 
     // Respond with a success message
     c.String(200, "File saved: %s.nw", title)
+		c.HTML(http.StatusOK, "newpage.tmpl", gin.H{
+			"siteTitle": siteTitle,
+			"title": title,
+			"message": "File saved: " + title,
+		})
 	})
 	
 	r.GET("/submit/:title", authRequired(), func(c *gin.Context) {
 		title := c.Param("title")
 		c.HTML(http.StatusOK, "newpage.tmpl", gin.H{
+			"siteTitle": siteTitle,
 			"title": title,
+			"message": "",
 		})
+	})
+
+	r.GET("/page/:title", func(c *gin.Context) {
+		// Get the filename from the URL parameter
+		title := sanitizeFilename(c.Param("title"))
+
+		// Ensure the file has a .html extension
+		if filepath.Ext(title) != ".html" {
+			title += ".html"
+		}
+
+		// Check if the file exists in the templates directory
+		if _, err := filepath.Glob(wikiDstDir + title); err != nil || len(title) == 0 {
+			c.String(http.StatusNotFound, "404 Not Found")
+			return
+		}
+
+		// Render the requested HTML file
+		c.HTML(http.StatusOK, title, nil)
 	})
 
 	r.GET("/edit/:title", authRequired(), func(c *gin.Context) {
@@ -174,6 +202,7 @@ func main() {
     }
 		
 		c.HTML(http.StatusOK, "editpage.tmpl", gin.H{
+			"siteTitle": siteTitle,
 			"title": title,
 			"content": template.HTML(content),
 		})
